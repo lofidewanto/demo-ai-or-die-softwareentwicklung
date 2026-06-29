@@ -53,6 +53,17 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+		<!--
+			H2 in-memory database. Required at runtime because the project uses
+			Spring Data JPA + Flyway, which need a JDBC datasource/driver to start.
+			Version is managed by the Spring Boot parent BOM (no version override,
+			so no version conflict with existing dependencies).
+		-->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa-test</artifactId>
