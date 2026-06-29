@@ -27,11 +27,11 @@ Monte-Carlo-/K.-o.-Simulation und statistische Visualisierungen.
 
 * Report: https://lofidewanto.github.io/demo-ai-or-die-softwareentwicklung/
 
-Das Deployment erfolgt über GitHub Pages. Dazu muss GitHub Pages in den
-Repository-Einstellungen (*Settings → Pages*) aktiviert und ein GitHub-Actions-Workflow
-(z. B. `.github/workflows/pages.yml`) ergänzt werden, der die HTML-Datei nach `public/`
-kopiert (als `index.html` sowie unter Originalnamen) und sie bei jedem Push auf `main`
-veröffentlicht.
+Das Deployment erfolgt automatisch über GitHub Actions
+([`.github/workflows/pages.yml`](.github/workflows/pages.yml)): Der Workflow kopiert die
+HTML-Datei nach `public/` (als `index.html` sowie unter Originalnamen) und veröffentlicht
+sie bei jedem Push auf `main` über GitHub Pages. Voraussetzung ist, dass GitHub Pages in
+den Repository-Einstellungen (*Settings → Pages → Source: GitHub Actions*) aktiviert ist.
 
 ### Lokal ansehen
 
