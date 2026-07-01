@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{fragments/layout :: page(~{::title}, ~{::main})}">
+<head>
+	<title>Ihr Versicherungsschein – DEVK Auslandsreisekrankenversicherung</title>
+</head>
+<body>
+<main id="main" class="page page--form">
+
+	<div th:replace="~{fragments/stepper :: stepper}">Stepper</div>
+
+	<div class="confirmation">
+		<div class="confirmation__icon" aria-hidden="true">✓</div>
+		<h1 class="form-title">Vielen Dank für Ihren Antrag!</h1>
+		<p class="form-intro">
+			Ihr Antrag auf eine Auslandsreisekrankenversicherung ist bei uns eingegangen. Ihre
+			Antragsnummer lautet:
+		</p>
+		<p class="confirmation__number" th:text="${confirmation.applicationNumber}">ARK-000042</p>
+	</div>
+
+	<section class="panel">
+		<h2 class="panel__title">Zusammenfassung</h2>
+		<dl class="summary">
+			<div class="summary__row">
+				<dt>Produkt</dt>
+				<dd>Auslandsreisekrankenversicherung (weltweit, bis 2 Monate pro Reise)</dd>
+			</div>
+			<div class="summary__row">
+				<dt>Versicherungsnehmer:in</dt>
+				<dd th:text="${confirmation.salutationLabel} + ' ' + ${confirmation.fullName}">Frau Erika Mustermann</dd>
+			</div>
+			<div class="summary__row">
+				<dt>Anschrift</dt>
+				<dd>
+					<span th:text="${confirmation.street} + ' ' + ${confirmation.houseNumber}">Musterstraße 1</span><br>
+					<span th:text="${confirmation.postalCode} + ' ' + ${confirmation.city}">50735 Köln</span>
+				</dd>
+			</div>
+			<div class="summary__row">
+				<dt>E-Mail</dt>
+				<dd th:text="${confirmation.email}">erika@example.com</dd>
+			</div>
+			<div class="summary__row">
+				<dt>Versicherungsbeginn</dt>
+				<dd th:text="${confirmation.insuranceStart}">01.08.2026</dd>
+			</div>
+			<div class="summary__row">
+				<dt>Versicherte Personen</dt>
+				<dd>
+					<ul class="summary__inline">
+						<li th:each="birthDate : ${confirmation.insuredBirthDates}" th:text="${birthDate}">01.01.1990</li>
+					</ul>
+				</dd>
+			</div>
+			<div class="summary__row summary__row--highlight">
+				<dt>Jahresbeitrag</dt>
+				<dd th:text="${confirmation.premium}">15,90 €</dd>
+			</div>
+		</dl>
+	</section>
+
+	<div class="alert alert--info" role="note">
+		Dies ist eine Demonstrationsanwendung. Es erfolgt kein realer Vertragsabschluss und kein
+		Beitragseinzug.
+	</div>
+
+	<div class="form-actions">
+		<a class="btn btn--secondary" th:href="@{/}">Zur Startseite</a>
+		<a class="btn btn--primary" th:href="@{/rechner/neu}">Neuen Antrag berechnen</a>
+	</div>
+
+</main>
+</body>
+</html>

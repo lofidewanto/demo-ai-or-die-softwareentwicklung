@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org" th:fragment="page(title, content)">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="robots" content="noindex, nofollow">
+	<title th:replace="${title}">DEVK Auslandsreisekrankenversicherung</title>
+	<link rel="icon" type="image/svg+xml" th:href="@{/img/favicon.svg}">
+	<link rel="stylesheet" th:href="@{/css/devk.css}">
+</head>
+<body>
+	<a class="skip-link" href="#main">Direkt zum Inhalt</a>
+
+	<header class="site-header">
+		<div class="site-header__inner">
+			<a class="brand" th:href="@{/}" aria-label="DEVK Startseite">
+				<span class="brand__mark">DEVK</span>
+				<span class="brand__claim">Auslandsreise&shy;kranken&shy;versicherung</span>
+			</a>
+			<a class="site-header__cta" th:href="@{/rechner/allgemeine-angaben}">Beitrag berechnen</a>
+		</div>
+	</header>
+
+	<main id="main" th:replace="${content}">
+		<p>Inhalt</p>
+	</main>
+
+	<footer class="site-footer">
+		<div class="site-footer__inner">
+			<p class="site-footer__brand"><span class="brand__mark brand__mark--light">DEVK</span></p>
+			<nav class="site-footer__nav" aria-label="Rechtliches">
+				<a href="https://www.devk.de/rechtliches/impressum" rel="noopener" target="_blank">Impressum</a>
+				<a href="https://www.devk.de/rechtliches/datenschutz/" rel="noopener" target="_blank">Datenschutz</a>
+				<a href="https://www.devk.de/produkte/krankenversicherung/ausland/" rel="noopener" target="_blank">Produktinformationen</a>
+			</nav>
+			<p class="site-footer__note">
+				Demonstrationsanwendung im DEVK-Design – keine echte DEVK-Anwendung, kein
+				rechtsverbindliches Angebot.
+			</p>
+			<p class="site-footer__copy">&copy; DEVK 2026</p>
+		</div>
+	</footer>
+
+	<script th:src="@{/js/wizard.js}" defer></script>
+</body>
+</html>

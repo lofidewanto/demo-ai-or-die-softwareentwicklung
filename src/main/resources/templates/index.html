@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{fragments/layout :: page(~{::title}, ~{::main})}">
+<head>
+	<title>Auslandsreisekrankenversicherung – DEVK</title>
+</head>
+<body>
+<main id="main" class="page">
+
+	<section class="hero">
+		<div class="hero__inner">
+			<p class="hero__eyebrow">Im Ausland Privatpatient:in</p>
+			<h1 class="hero__title">Auslandsreise&shy;kranken&shy;versicherung:<br>sicher auf Reisen</h1>
+			<p class="hero__lead">
+				Weltweiter Versicherungsschutz für bis zu 2 Monate pro Reise – ohne Wartezeit,
+				schon <strong th:text="${startingPremium}">15,90 €</strong> im Jahr.
+			</p>
+			<div class="hero__actions">
+				<a class="btn btn--primary btn--lg" th:href="@{/rechner/allgemeine-angaben}">
+					Jetzt Beitrag berechnen
+				</a>
+				<a class="btn btn--ghost btn--lg" href="#leistungen">Leistungen ansehen</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section" aria-labelledby="gruende">
+		<h2 id="gruende" class="section__title">Gute Gründe für die DEVK</h2>
+		<ul class="cards">
+			<li class="card">
+				<h3 class="card__title">Sofort-Schutz</h3>
+				<p>Versicherungsschutz ohne Wartezeit – ideal auch für kurzfristig gebuchte Reisen.</p>
+			</li>
+			<li class="card">
+				<h3 class="card__title">Rundumschutz</h3>
+				<p>Schutz auf Urlaubs-, Dienst- und Sportreisen bei allen Arten von Auslandsaufenthalten.</p>
+			</li>
+			<li class="card">
+				<h3 class="card__title">Günstiger Beitrag</h3>
+				<p>Als Jahresversicherung schon ab <strong th:text="${startingPremium}">15,90 €</strong>
+					(Einzelperson bis zur Vollendung des 60. Lebensjahres).</p>
+			</li>
+		</ul>
+	</section>
+
+	<section id="leistungen" class="section section--muted" aria-labelledby="leistungen-title">
+		<h2 id="leistungen-title" class="section__title">Was leistet die Auslandsreisekrankenversicherung?</h2>
+		<p class="section__lead">
+			Mit der DEVK sind Sie im Ausland bestens geschützt. Der Versicherungsschutz beinhaltet
+			unter anderem:
+		</p>
+		<ul class="checklist">
+			<li>Ärztliche Behandlung, Arznei-, Verband-, Heil- und Hilfsmittel</li>
+			<li>Schmerzstillende Zahnbehandlungen und Zahnfüllungen in einfacher Ausführung</li>
+			<li>Unterbringung, Behandlung und Operationen im Krankenhaus</li>
+			<li>Notwendige Krankentransporte</li>
+			<li>Medizinisch sinnvoller und vertretbarer Krankenrücktransport</li>
+			<li>Im Todesfall Überführung ins Heimatland</li>
+			<li>Betreuung mitversicherter minderjähriger Kinder bzw. Kinderrückholung</li>
+		</ul>
+	</section>
+
+	<section class="section" aria-labelledby="ablauf">
+		<h2 id="ablauf" class="section__title">So funktioniert's</h2>
+		<ol class="steps-guide">
+			<li class="steps-guide__item">
+				<span class="steps-guide__num">1</span>
+				<div>
+					<h3>Allgemeine Angaben</h3>
+					<p>Versicherungsbeginn und Geburtsdaten der zu versichernden Personen (1–4).</p>
+				</div>
+			</li>
+			<li class="steps-guide__item">
+				<span class="steps-guide__num">2</span>
+				<div>
+					<h3>Unser Angebot</h3>
+					<p>Sie erhalten sofort Ihren persönlichen Jahresbeitrag.</p>
+				</div>
+			</li>
+			<li class="steps-guide__item">
+				<span class="steps-guide__num">3</span>
+				<div>
+					<h3>Ihr Antrag</h3>
+					<p>Antragsteller- und Bankdaten erfassen und Bedingungen bestätigen.</p>
+				</div>
+			</li>
+			<li class="steps-guide__item">
+				<span class="steps-guide__num">4</span>
+				<div>
+					<h3>Ihr Versicherungsschein</h3>
+					<p>Antrag absenden und Bestätigung mit Antragsnummer erhalten.</p>
+				</div>
+			</li>
+		</ol>
+		<div class="section__actions">
+			<a class="btn btn--primary btn--lg" th:href="@{/rechner/allgemeine-angaben}">
+				Beitrag berechnen &amp; Antrag starten
+			</a>
+		</div>
+		<p class="hint">
+			Hinweis: Bitte halten Sie die Geburtsdaten der zu versichernden Personen sowie Ihre
+			Bankverbindung bereit.
+		</p>
+	</section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{fragments/layout :: page(~{::title}, ~{::main})}">
+<head>
+	<title>Ihr Antrag – DEVK Auslandsreisekrankenversicherung</title>
+</head>
+<body>
+<main id="main" class="page page--form">
+
+	<div th:replace="~{fragments/stepper :: stepper}">Stepper</div>
+
+	<h1 class="form-title">Ihr Antrag</h1>
+	<p class="form-intro">
+		Bitte erfassen Sie die Daten des Antragstellers bzw. der Versicherungsnehmerin sowie Ihre
+		Bankverbindung. Mit <span class="req">*</span> gekennzeichnete Felder sind Pflichtfelder.
+	</p>
+
+	<aside class="offer-reminder">
+		<span>Jahresbeitrag</span>
+		<strong th:text="${premium}">15,90 €</strong>
+		<span th:text="'für ' + ${generalDetails.numberOfPersons} + ' Person(en)'">für 1 Person(en)</span>
+	</aside>
+
+	<form th:action="@{/rechner/antrag}" th:object="${applicationForm}" method="post" novalidate>
+
+		<div class="alert alert--error" role="alert" th:if="${#fields.hasAnyErrors()}">
+			<strong>Bitte prüfen Sie Ihre Eingaben.</strong>
+			<ul class="alert__list">
+				<li th:each="err : ${#fields.allErrors()}" th:text="${err}">Fehlermeldung</li>
+			</ul>
+		</div>
+
+		<fieldset class="fieldset">
+			<legend class="fieldset__legend">Persönliche Daten</legend>
+
+			<div class="form-field" th:classappend="${#fields.hasErrors('salutation')} ? ' is-invalid'">
+				<label for="salutation">Anrede <span class="req">*</span></label>
+				<select id="salutation" th:field="*{salutation}">
+					<option value="">Bitte wählen</option>
+					<option th:each="s : ${salutations}" th:value="${s}" th:text="${s.label}">Frau</option>
+				</select>
+				<p class="field-error" th:if="${#fields.hasErrors('salutation')}" th:errors="*{salutation}">Fehler</p>
+			</div>
+
+			<div class="form-row">
+				<div class="form-field" th:classappend="${#fields.hasErrors('firstName')} ? ' is-invalid'">
+					<label for="firstName">Vorname <span class="req">*</span></label>
+					<input type="text" id="firstName" th:field="*{firstName}" autocomplete="given-name">
+					<p class="field-error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Fehler</p>
+				</div>
+				<div class="form-field" th:classappend="${#fields.hasErrors('lastName')} ? ' is-invalid'">
+					<label for="lastName">Nachname <span class="req">*</span></label>
+					<input type="text" id="lastName" th:field="*{lastName}" autocomplete="family-name">
+					<p class="field-error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Fehler</p>
+				</div>
+			</div>
+
+			<div class="form-field" th:classappend="${#fields.hasErrors('birthDate')} ? ' is-invalid'">
+				<label for="birthDate">Geburtsdatum <span class="req">*</span></label>
+				<input type="date" id="birthDate" th:field="*{birthDate}" autocomplete="bday">
+				<p class="field-error" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}">Fehler</p>
+			</div>
+		</fieldset>
+
+		<fieldset class="fieldset">
+			<legend class="fieldset__legend">Anschrift</legend>
+
+			<div class="form-row form-row--street">
+				<div class="form-field" th:classappend="${#fields.hasErrors('street')} ? ' is-invalid'">
+					<label for="street">Straße <span class="req">*</span></label>
+					<input type="text" id="street" th:field="*{street}" autocomplete="address-line1">
+					<p class="field-error" th:if="${#fields.hasErrors('street')}" th:errors="*{street}">Fehler</p>
+				</div>
+				<div class="form-field" th:classappend="${#fields.hasErrors('houseNumber')} ? ' is-invalid'">
+					<label for="houseNumber">Hausnummer <span class="req">*</span></label>
+					<input type="text" id="houseNumber" th:field="*{houseNumber}">
+					<p class="field-error" th:if="${#fields.hasErrors('houseNumber')}" th:errors="*{houseNumber}">Fehler</p>
+				</div>
+			</div>
+
+			<div class="form-row form-row--city">
+				<div class="form-field" th:classappend="${#fields.hasErrors('postalCode')} ? ' is-invalid'">
+					<label for="postalCode">Postleitzahl <span class="req">*</span></label>
+					<input type="text" id="postalCode" inputmode="numeric" th:field="*{postalCode}"
+						   autocomplete="postal-code" maxlength="5">
+					<p class="field-error" th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}">Fehler</p>
+				</div>
+				<div class="form-field" th:classappend="${#fields.hasErrors('city')} ? ' is-invalid'">
+					<label for="city">Ort <span class="req">*</span></label>
+					<input type="text" id="city" th:field="*{city}" autocomplete="address-level2">
+					<p class="field-error" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">Fehler</p>
+				</div>
+			</div>
+		</fieldset>
+
+		<fieldset class="fieldset">
+			<legend class="fieldset__legend">Kontakt</legend>
+
+			<div class="form-row">
+				<div class="form-field" th:classappend="${#fields.hasErrors('email')} ? ' is-invalid'">
+					<label for="email">E-Mail-Adresse <span class="req">*</span></label>
+					<input type="email" id="email" th:field="*{email}" autocomplete="email">
+					<p class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Fehler</p>
+				</div>
+				<div class="form-field" th:classappend="${#fields.hasErrors('phone')} ? ' is-invalid'">
+					<label for="phone">Telefon <span class="opt">(optional)</span></label>
+					<input type="tel" id="phone" th:field="*{phone}" autocomplete="tel">
+					<p class="field-error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Fehler</p>
+				</div>
+			</div>
+		</fieldset>
+
+		<fieldset class="fieldset">
+			<legend class="fieldset__legend">Bankverbindung</legend>
+
+			<div class="form-field" th:classappend="${#fields.hasErrors('iban')} ? ' is-invalid'">
+				<label for="iban">IBAN <span class="req">*</span></label>
+				<input type="text" id="iban" th:field="*{iban}" placeholder="DE00 0000 0000 0000 0000 00"
+					   autocomplete="off" spellcheck="false">
+				<p class="form-hint">Für den Einzug des Jahresbeitrags. Beispiel: DE89 3704 0044 0532 0130 00</p>
+				<p class="field-error" th:if="${#fields.hasErrors('iban')}" th:errors="*{iban}">Fehler</p>
+			</div>
+		</fieldset>
+
+		<fieldset class="fieldset">
+			<legend class="fieldset__legend">Bestätigungen</legend>
+
+			<div class="form-check" th:classappend="${#fields.hasErrors('acceptTerms')} ? ' is-invalid'">
+				<input type="checkbox" id="acceptTerms" th:field="*{acceptTerms}">
+				<label for="acceptTerms">
+					Ich habe die Versicherungsbedingungen (AVB) zur Auslandsreisekrankenversicherung
+					zur Kenntnis genommen. <span class="req">*</span>
+				</label>
+				<p class="field-error" th:if="${#fields.hasErrors('acceptTerms')}" th:errors="*{acceptTerms}">Fehler</p>
+			</div>
+
+			<div class="form-check" th:classappend="${#fields.hasErrors('acceptPrivacy')} ? ' is-invalid'">
+				<input type="checkbox" id="acceptPrivacy" th:field="*{acceptPrivacy}">
+				<label for="acceptPrivacy">
+					Ich stimme den Datenschutzhinweisen zur Verarbeitung meiner Daten zu. <span class="req">*</span>
+				</label>
+				<p class="field-error" th:if="${#fields.hasErrors('acceptPrivacy')}" th:errors="*{acceptPrivacy}">Fehler</p>
+			</div>
+		</fieldset>
+
+		<div class="form-actions">
+			<a class="btn btn--secondary" th:href="@{/rechner/angebot}">Zurück</a>
+			<button type="submit" class="btn btn--primary">Zahlungspflichtig beantragen</button>
+		</div>
+	</form>
+
+</main>
+</body>
+</html>

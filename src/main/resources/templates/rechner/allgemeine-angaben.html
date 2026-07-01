@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{fragments/layout :: page(~{::title}, ~{::main})}">
+<head>
+	<title>Allgemeine Angaben – DEVK Auslandsreisekrankenversicherung</title>
+</head>
+<body>
+<main id="main" class="page page--form">
+
+	<div th:replace="~{fragments/stepper :: stepper}">Stepper</div>
+
+	<h1 class="form-title">Angebotsrechner – Allgemeine Angaben</h1>
+	<p class="form-intro">
+		Bitte machen Sie die folgenden Angaben, um Ihren persönlichen Jahresbeitrag zu berechnen.
+		Mit <span class="req">*</span> gekennzeichnete Felder sind Pflichtfelder.
+	</p>
+
+	<form th:action="@{/rechner/allgemeine-angaben}" th:object="${generalDetailsForm}" method="post" novalidate>
+
+		<div class="alert alert--error" role="alert" th:if="${#fields.hasAnyErrors()}">
+			<strong>Bitte prüfen Sie Ihre Eingaben.</strong>
+			<ul class="alert__list">
+				<li th:each="err : ${#fields.allErrors()}" th:text="${err}">Fehlermeldung</li>
+			</ul>
+		</div>
+
+
+		<fieldset class="fieldset">
+			<legend class="fieldset__legend">Angabe zum Versicherungsbeginn</legend>
+
+			<div class="form-field" th:classappend="${#fields.hasErrors('insuranceStart')} ? ' is-invalid'">
+				<label for="insuranceStart">Gewünschter Versicherungsbeginn <span class="req">*</span></label>
+				<input type="date" id="insuranceStart" th:field="*{insuranceStart}"
+					   aria-describedby="insuranceStart-error">
+				<p class="field-error" id="insuranceStart-error"
+				   th:if="${#fields.hasErrors('insuranceStart')}" th:errors="*{insuranceStart}">Fehler</p>
+			</div>
+		</fieldset>
+
+		<fieldset class="fieldset">
+			<legend class="fieldset__legend">Zu versichernde Personen</legend>
+
+			<div class="form-field" th:classappend="${#fields.hasErrors('numberOfPersons')} ? ' is-invalid'">
+				<label for="numberOfPersons">Anzahl zu versichernder Personen <span class="req">*</span></label>
+				<select id="numberOfPersons" th:field="*{numberOfPersons}" data-person-count>
+					<option th:each="n : ${#numbers.sequence(1, maxPersons)}"
+							th:value="${n}"
+							th:text="${n} == 1 ? '1 Person' : ${n} + ' Personen'">1 Person</option>
+				</select>
+				<p class="field-error" th:if="${#fields.hasErrors('numberOfPersons')}"
+				   th:errors="*{numberOfPersons}">Fehler</p>
+			</div>
+
+			<div class="person-fields">
+				<!-- Person 1..4; persons beyond the selected count are hidden by JS (progressive enhancement). -->
+				<div class="form-field person-field" data-person="1"
+					 th:classappend="${#fields.hasErrors('birthDate1')} ? ' is-invalid'">
+					<label for="birthDate1">Geburtsdatum 1. zu versichernde Person <span class="req">*</span></label>
+					<input type="date" id="birthDate1" th:field="*{birthDate1}">
+					<p class="field-error" th:if="${#fields.hasErrors('birthDate1')}" th:errors="*{birthDate1}">Fehler</p>
+				</div>
+
+				<div class="form-field person-field" data-person="2"
+					 th:classappend="${#fields.hasErrors('birthDate2')} ? ' is-invalid'">
+					<label for="birthDate2">Geburtsdatum 2. zu versichernde Person <span class="req">*</span></label>
+					<input type="date" id="birthDate2" th:field="*{birthDate2}">
+					<p class="field-error" th:if="${#fields.hasErrors('birthDate2')}" th:errors="*{birthDate2}">Fehler</p>
+				</div>
+
+				<div class="form-field person-field" data-person="3"
+					 th:classappend="${#fields.hasErrors('birthDate3')} ? ' is-invalid'">
+					<label for="birthDate3">Geburtsdatum 3. zu versichernde Person <span class="req">*</span></label>
+					<input type="date" id="birthDate3" th:field="*{birthDate3}">
+					<p class="field-error" th:if="${#fields.hasErrors('birthDate3')}" th:errors="*{birthDate3}">Fehler</p>
+				</div>
+
+				<div class="form-field person-field" data-person="4"
+					 th:classappend="${#fields.hasErrors('birthDate4')} ? ' is-invalid'">
+					<label for="birthDate4">Geburtsdatum 4. zu versichernde Person <span class="req">*</span></label>
+					<input type="date" id="birthDate4" th:field="*{birthDate4}">
+					<p class="field-error" th:if="${#fields.hasErrors('birthDate4')}" th:errors="*{birthDate4}">Fehler</p>
+				</div>
+			</div>
+		</fieldset>
+
+		<div class="form-actions">
+			<a class="btn btn--secondary" th:href="@{/}">Abbrechen</a>
+			<button type="submit" class="btn btn--primary">Weiter zum Angebot</button>
+		</div>
+	</form>
+
+</main>
+</body>
+</html>

@@ -39,27 +39,59 @@ den Repository-Einstellungen (*Settings → Pages → Source: GitHub Actions*) a
 open wm-2026-premium-report.html
 ```
 
-## 2. TAA-Webapp – Auslandsreiseversicherung
+## 2. TAA-Webapp – Auslandsreisekrankenversicherung
 
-Spring-Boot-Webanwendung für das DEVK-Produkt *Auslandsreiseversicherung* (TAA).
-Das Projekt liegt derzeit als Scaffold vor; die fachlichen Anforderungen sind in der
-User Story [`README-app-development-taa.md`](README-app-development-taa.md) beschrieben.
+Spring-Boot-Webanwendung für das DEVK-Produkt *Auslandsreisekrankenversicherung* (TAA).
+Die Anwendung bildet das Produkt fachlich ab und führt Nutzer:innen durch einen
+digitalen Angebots- und Antragsprozess im DEVK-Design. Sie orientiert sich an der
+DEVK-Referenzstrecke (`Anleitung → Allgemeine Angaben → Unser Angebot → Ihr Antrag →
+Ihr Versicherungsschein`).
+
+> Umsetzung der User Story
+> [#1](https://github.com/lofidewanto/demo-ai-or-die-softwareentwicklung/issues/1).
+> Der detaillierte Implementierungsplan liegt unter
+> [`docs/user-stories-planung/us-001-auslandsreisekrankenversicherung-webapp.md`](docs/user-stories-planung/us-001-auslandsreisekrankenversicherung-webapp.md).
+>
+> **Hinweis:** reine Demonstrationsanwendung – kein echtes DEVK-Angebot, kein
+> Vertragsabschluss, kein Beitragseinzug.
 
 * **Artefakt:** `com.example:demo-ai-or-die-softwareentwicklung`
 * **Stack:** Spring Boot 4.0.x, Java 21
-* **Dependencies:** Spring Web MVC, Data JPA, Flyway, Thymeleaf, DevTools
+* **Dependencies:** Spring Web MVC, Data JPA, Flyway, Thymeleaf, H2, DevTools,
+  Bean Validation (`spring-boot-starter-validation` – einzige begründete Ergänzung,
+  Version über den Parent-BOM verwaltet, konfliktfrei)
 
-### Projektstruktur
+### Funktionsumfang
+
+* Produkt-Landingpage mit Leistungen und Einstieg in den Abschlussprozess
+* Mehrstufiger Angebotsrechner (POST-Redirect-GET, Session-Wizard mit Fortschritts-Stepper)
+* Beitragsberechnung (`PremiumCalculator`) für 1–4 Personen, altersabhängig
+* Serverseitige Eingabevalidierung inkl. IBAN-Prüfung (Mod-97), deutschsprachige
+  Fehlermeldungen im DEVK-Design
+* DEVK-Markendesign (Farben/Funktionsfarben, Typografie), responsiv (Mobile First)
+* Persistenz des Antrags (H2 + Flyway) inkl. Kindtabelle für versicherte Personen
+* Baseline-Security: HTTP-Security-Header, gehärtete Session-Cookies, Output-Escaping
+
+### Architektur (Clean Architecture)
 
 ```
-src/
-├── main/
-│   ├── java/com/example/taa/DemoTaaApplication.java   # Spring-Boot-Einstiegspunkt
-│   └── resources/
-│       ├── application.properties
-│       └── db/migration/                              # Flyway-Migrationen
-└── test/
-    └── java/com/example/taa/DemoTaaApplicationTests.java
+src/main/java/com/example/taa/
+├── DemoTaaApplication.java
+├── domain/          # Modell (Records/Enums), PremiumCalculator, Repository-Port (framework-frei)
+├── application/     # Use-Cases (TravelInsuranceService), Command-DTO
+├── infrastructure/  # JPA-Persistenz-Adapter, Flyway, Security-Header, Bean-Konfiguration
+└── web/             # Controller, Formulare (Bean Validation), Session-Wizard, View-Modelle
+src/main/resources/
+├── templates/       # Thymeleaf (Layout-Fragment, Stepper, 4 Wizard-Seiten, Fehlerseite)
+├── static/          # devk.css (Designsystem), wizard.js, favicon.svg
+├── db/migration/    # Flyway V1 (Baseline) + V2 (Schema-Erweiterung)
+├── application.properties
+└── messages.properties / ValidationMessages.properties
+src/test/java/com/example/taa/
+├── domain/service/PremiumCalculatorTest.java                 # Unit
+├── application/TravelInsuranceServiceTest.java               # Unit (Mockito)
+├── web/QuoteWizardControllerTest.java                        # @WebMvcTest
+└── infrastructure/persistence/...RepositoryAdapterTest.java  # @DataJpaTest
 ```
 
 ### Build & Start

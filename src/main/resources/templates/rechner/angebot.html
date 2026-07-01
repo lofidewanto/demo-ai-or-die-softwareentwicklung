@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{fragments/layout :: page(~{::title}, ~{::main})}">
+<head>
+	<title>Unser Angebot – DEVK Auslandsreisekrankenversicherung</title>
+</head>
+<body>
+<main id="main" class="page page--form">
+
+	<div th:replace="~{fragments/stepper :: stepper}">Stepper</div>
+
+	<h1 class="form-title">Unser Angebot</h1>
+	<p class="form-intro">
+		Auf Basis Ihrer Angaben haben wir Ihren persönlichen Jahresbeitrag für die
+		Auslandsreisekrankenversicherung berechnet.
+	</p>
+
+	<div class="offer">
+		<div class="offer__price">
+			<span class="offer__price-label">Ihr Jahresbeitrag</span>
+			<span class="offer__price-value" th:text="${premium}">15,90 €</span>
+			<span class="offer__price-hint">inkl. Versicherungsteuer, pro Jahr</span>
+		</div>
+		<dl class="summary">
+			<div class="summary__row">
+				<dt>Produkt</dt>
+				<dd>Auslandsreisekrankenversicherung (weltweit, bis 2 Monate pro Reise)</dd>
+			</div>
+			<div class="summary__row">
+				<dt>Versicherungsbeginn</dt>
+				<dd th:text="${#temporals.format(generalDetails.insuranceStart, 'dd.MM.yyyy')}">01.08.2026</dd>
+			</div>
+			<div class="summary__row">
+				<dt>Zu versichernde Personen</dt>
+				<dd th:text="${generalDetails.numberOfPersons}">1</dd>
+			</div>
+			<div class="summary__row">
+				<dt>Geburtsdaten</dt>
+				<dd>
+					<ul class="summary__inline">
+						<li th:each="birthDate : ${generalDetails.selectedBirthDates()}"
+							th:text="${#temporals.format(birthDate, 'dd.MM.yyyy')}">01.01.1990</li>
+					</ul>
+				</dd>
+			</div>
+		</dl>
+	</div>
+
+	<div class="alert alert--info" role="note">
+		Der ausgewiesene Beitrag ist ein unverbindliches Demo-Angebot und stellt kein
+		rechtsverbindliches Angebot der DEVK dar.
+	</div>
+
+	<div class="form-actions">
+		<a class="btn btn--secondary" th:href="@{/rechner/allgemeine-angaben}">Zurück</a>
+		<a class="btn btn--primary" th:href="@{/rechner/antrag}">Weiter zum Antrag</a>
+	</div>
+
+</main>
+</body>
+</html>

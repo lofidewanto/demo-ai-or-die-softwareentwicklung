@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{fragments/layout :: page(~{::title}, ~{::main})}">
+<head>
+	<title>Es ist ein Fehler aufgetreten – DEVK</title>
+</head>
+<body>
+<main id="main" class="page page--form">
+
+	<div class="confirmation">
+		<div class="confirmation__icon confirmation__icon--error" aria-hidden="true">!</div>
+		<h1 class="form-title">Es ist ein Fehler aufgetreten</h1>
+		<p class="form-intro" th:if="${status}">
+			Fehlercode: <strong th:text="${status}">500</strong>
+			<span th:if="${error}" th:text="'– ' + ${error}">Internal Server Error</span>
+		</p>
+		<p class="form-intro">
+			Bitte versuchen Sie es erneut. Falls das Problem weiterhin besteht, kehren Sie zur
+			Startseite zurück und starten Sie die Berechnung neu.
+		</p>
+	</div>
+
+	<div class="form-actions">
+		<a class="btn btn--primary" th:href="@{/}">Zur Startseite</a>
+	</div>
+
+</main>
+</body>
+</html>

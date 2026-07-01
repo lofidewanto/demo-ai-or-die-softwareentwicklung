@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<body>
+	<!--
+		Progress stepper mirroring the DEVK reference strecke.
+		Uses the model attributes 'steps' (all WizardStep values) and
+		'activeStep' (the current step).
+	-->
+	<nav th:fragment="stepper" class="stepper" aria-label="Bearbeitungsstand">
+		<ol class="stepper__list">
+			<li class="stepper__item"
+				th:each="step : ${steps}"
+				th:classappend="${step.name() == activeStep.name()}
+					? ' is-active'
+					: (${step.ordinal() < activeStep.ordinal()} ? ' is-done' : '')"
+				th:with="done=${step.ordinal() < activeStep.ordinal()},
+						current=${step.name() == activeStep.name()}">
+				<span class="stepper__badge" aria-hidden="true"
+					  th:text="${done} ? '✓' : ${step.number}">1</span>
+				<span class="stepper__text" th:text="${step.label}">Schritt</span>
+				<span class="stepper__state" th:if="${current}"> (aktuell)</span>
+			</li>
+		</ol>
+	</nav>
+</body>
+</html>
